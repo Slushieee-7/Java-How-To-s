@@ -54,7 +54,24 @@ public class calculator extends JFrame implements KeyListener {
             }
         } else if (key.equals("Enter")) {
             System.out.println("The answer is: " + textField.getText());
-        } else {
+        } 
+        else if (key.equals("+")){
+            textField.setText(textField.getText() + "+");
+            addNum(key, key);
+        }
+        else if (key.equals("-")){
+            textField.setText(textField.getText() + "-");
+            minNum(key, key);
+        }
+        else if (key.equals("*")){
+            textField.setText(textField.getText() + "*");
+            mulNum(key, key);
+        }
+        else if (key.equals("/")){
+            textField.setText(textField.getText() + "/");
+            divNum(key, key);
+        }
+        else {
             textField.setText(textField.getText() + key);
         }
     }
@@ -72,5 +89,21 @@ public class calculator extends JFrame implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         System.out.println("Key Released: " + KeyEvent.getKeyText(e.getKeyCode()));
+    }
+
+    public void addNum(String x, String y) {
+
+    }
+
+    public void minNum(String x, String y) {
+
+    }
+
+    public void mulNum(String x, String y) {
+
+    }
+
+    public void divNum(String x, String y) {
+
     }
 }
