@@ -46,6 +46,8 @@ public class GradeDistribution {
         drawRow("C", percentC, maxAsterisks);
         drawRow("D", percentD, maxAsterisks);
         drawRow("F", percentF, maxAsterisks);
+
+        System.out.println(totalGrades);
     }
 
     // Helper method to draw a single row in the graph
