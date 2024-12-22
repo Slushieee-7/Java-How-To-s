@@ -9,6 +9,5 @@ public class loginSystem {
         //creating instances for the different classes
         IDandPasswords idandPass = new IDandPasswords();
         LoginPage loginpage = new LoginPage(idandPass.getInfo());
-        WelcomePage welcome = new WelcomePage();
     }
 }
