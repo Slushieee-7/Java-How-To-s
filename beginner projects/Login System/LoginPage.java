@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 public class LoginPage implements ActionListener{
 
@@ -71,6 +72,7 @@ public class LoginPage implements ActionListener{
         frame.setSize(500, 500); //sets the size of the window
         frame.setLayout(null); //no Layout needed
         frame.setVisible(true); //makes the window visible
+        frame.setLocationRelativeTo(null); //sets the window at the center of the screen
     }
 
     @Override
@@ -90,7 +92,16 @@ public class LoginPage implements ActionListener{
                 if(loginInfo.get(userID).equals(userPass)){ //if the entered user ID is equals to the password:
                     confirmMessage.setText("Login Successful ^o^");; //it will display "Login Successful!"
                     confirmMessage.setForeground(Color.BLACK); //its foreground will be blue
-                    WelcomePage welcome = new WelcomePage(); 
+
+                    Timer timer = new Timer(2000, new ActionListener() { //sets a 2 seconds time interval
+                        @Override
+                        public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
+                            frame.dispose(); // Dispose the login frame, then display the welcome page
+                            new WelcomePage(userID); // Open the welcome page, with the message of the window and userID
+                        }
+                    });
+                    timer.setRepeats(false); // Only execute once
+                    timer.start(); // Start the timer
                 }
                 else{
                     errorMessage.setText("Incorrect password (づ •. •)? "); //if the entered user ID is not equals to the password
