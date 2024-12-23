@@ -80,8 +80,8 @@ public class LoginPage implements ActionListener{
         if(e.getSource() == clearButton){ //when the clear button is pressed:
             IDField.setText(""); //sets the IDField blank
             PassField.setText(""); //sets the password field blank
-            confirmMessage.setText("");
-            errorMessage.setText("");
+            confirmMessage.setText(""); //clears the confirm message
+            errorMessage.setText(""); //clears the error message
         }
 
         if(e.getSource() == loginButton){
