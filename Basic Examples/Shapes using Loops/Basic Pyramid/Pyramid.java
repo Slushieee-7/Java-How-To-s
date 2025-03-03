@@ -1,6 +1,9 @@
 //to create a basic pyramid in java, we will use for loops
 //also using the user input
 
+//time complexity is O(n^2)
+//Space complexity is: O(1)
+
 import java.util.Scanner;
 
 public class Pyramid {
