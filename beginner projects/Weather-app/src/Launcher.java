@@ -9,6 +9,5 @@ public class Launcher {
                 new GUI().setVisible(true);
             }
         });
-        
     }
 }
