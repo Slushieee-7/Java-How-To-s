@@ -27,6 +27,7 @@ public class LoginPage implements ActionListener{
     JLabel userPassLabel = new JLabel("Password: "); //label the textField as Password
     JLabel confirmMessage = new JLabel(); //make a message for successful login
     JLabel errorMessage = new JLabel(); //make a message for failed login
+    IDandPasswords idandPasswords = new IDandPasswords();
 
     LoginPage(HashMap<String, String> loginInfoOriginal) { // we will now make this class the copy for the information
                                                            // stored in the IDandPasswords
@@ -121,7 +122,7 @@ public class LoginPage implements ActionListener{
                         @Override
                         public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
                             frame.dispose(); // Dispose the login frame, then display the welcome page
-                            new RegisterPage(); // Open the welcome page, with the message of the window and userID
+                            RegisterPage registerPage = new RegisterPage(idandPasswords); // Open the register page
                         }
                     });
             timer.setRepeats(false); // Only execute once

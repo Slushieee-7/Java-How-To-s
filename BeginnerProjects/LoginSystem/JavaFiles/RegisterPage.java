@@ -25,8 +25,10 @@ public class RegisterPage {
     JLabel warningLabel = new JLabel(" ");
     JButton regisButton = new JButton("Register");
     JButton backToLoginButton = new JButton("Back to Login");
+    IDandPasswords idandPasswords;
 
-    RegisterPage() { //we user String userID, so that the code accepts the userID, and will display the userID with the message
+    RegisterPage(IDandPasswords idandPasswordsClass) { //we user String userID, so that the code accepts the userID, and will display the userID with the message
+        this.idandPasswords = idandPasswordsClass;
 
         //setting the label or the message of the window
         welcomeLabel.setBounds(130, 50, 300, 25);
@@ -63,7 +65,7 @@ public class RegisterPage {
 
         //setting the warning message
         warningLabel.setBounds(150, 210, 200, 25);
-        warningLabel.setFont(new Font(null, Font.PLAIN, 15));
+        warningLabel.setFont(new Font(null, Font.BOLD, 15));
         warningLabel.setForeground(Color.RED);
         frame.add(warningLabel);
 
@@ -72,7 +74,7 @@ public class RegisterPage {
         backToLoginButton.setFocusable(false);
         backToLoginButton.addActionListener(e -> { 
             frame.dispose(); //close the current window
-            new LoginPage(new java.util.HashMap<String, String>()); //open the login page
+            LoginPage loginPage = new LoginPage(idandPasswords.getInfo()); //open the login page
         });
 
         //setting the registration button
@@ -80,15 +82,18 @@ public class RegisterPage {
         regisButton.setFocusable(false);
         regisButton.addActionListener(e -> {
             if (!nameField.getText().trim().isEmpty() && !emailField.getText().trim().isEmpty() && 
-                !addressField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty()) {
+                !addressField.getText().trim().isEmpty() && !String.valueOf(passwordField.getPassword()).trim().isEmpty()) {
                 String name = nameField.getText();
                 String email = emailField.getText();
                 String address = addressField.getText();
-                String password = passwordField.getText();
+                String password = String.valueOf(passwordField.getPassword());
                 System.out.println("Registered: " + name + ", " + email + ", " + address + ", " + password);
 
+                idandPasswords.addUser(name, password);
+
                 frame.dispose(); //close the current window
-                new LoginPage(new java.util.HashMap<String, String>()); //open the login page
+                LoginPage loginPage = new LoginPage(idandPasswords.getInfo());
+                // new LoginPage(new java.util.HashMap<String, String>()); //open the login page
             } else {
                 warningLabel.setText("Please fill in all fields");
             }

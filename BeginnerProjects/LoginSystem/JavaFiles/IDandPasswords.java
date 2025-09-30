@@ -14,6 +14,12 @@ public class IDandPasswords {
         login.put("REYYY", "reyrey");
     }
 
+    protected void addUser(String name, String password) {
+        login.put(name, password);
+        System.out.println(name + ", " + password);
+        System.out.println(login);
+    }
+
     //now, we make a class that will get the information 
     protected HashMap getInfo(){
         return login;
