@@ -20,6 +20,7 @@ public class LoginPage implements ActionListener{
     JFrame frame = new JFrame(); //instantiate the frame
     JButton loginButton = new JButton("Login"); //make a login button
     JButton clearButton = new JButton("Clear"); //make a clear or reset button
+    JButton registerButton = new JButton("Register"); //make a register button
     JTextField IDField = new JTextField(); //textField for user ID
     JPasswordField PassField = new JPasswordField(); //textField for user password and also for customization of password field
     JLabel userIDLabel = new JLabel("User ID: "); //Label the textField as UserID
@@ -46,12 +47,15 @@ public class LoginPage implements ActionListener{
         PassField.setEchoChar('•');
 
         //setting the buttons
-        loginButton.setBounds(140,200, 70, 25);
+        loginButton.setBounds(100,200, 70, 25);
         loginButton.addActionListener(this); //adds an action listener to this button
         loginButton.setFocusable(false); //no more borders when clicking the button
-        clearButton.setBounds(220,200, 70, 25);
+        clearButton.setBounds(180,200, 70, 25);
         clearButton.addActionListener(this); //adds an action listener to this button
         clearButton.setFocusable(false); //no more borders when clicking the button
+        registerButton.setBounds(260,200, 90, 25);
+        registerButton.addActionListener(this); //adds an action listener to this button
+        registerButton.setFocusable(false); //no more borders when clicking the button
 
         //adding the labels in the frame
         frame.add(userIDLabel);
@@ -66,6 +70,7 @@ public class LoginPage implements ActionListener{
         //adding the buttons in the frame
         frame.add(loginButton);
         frame.add(clearButton);
+        frame.add(registerButton);
 
         //setting the frame
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //exits the window on default 
@@ -110,6 +115,17 @@ public class LoginPage implements ActionListener{
             else {
                 errorMessage.setText("Username not found (ㅠ︿ㅠ) "); //if there is no string entered at
             }
+        }
+        if(e.getSource() == registerButton){ //when the register button is pressed:
+            Timer timer = new Timer(200, new ActionListener() { //sets a 2 seconds time interval
+                        @Override
+                        public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
+                            frame.dispose(); // Dispose the login frame, then display the welcome page
+                            new RegisterPage(); // Open the welcome page, with the message of the window and userID
+                        }
+                    });
+            timer.setRepeats(false); // Only execute once
+            timer.start(); // Start the timer
         }
     } 
 }
