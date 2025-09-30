@@ -14,6 +14,10 @@ public class RegisterPage {
     JLabel welcomeLabel = new JLabel("Hi!");
     JTextField nameField = new JTextField();
     JLabel nameLabel = new JLabel("Name: ");
+    JTextField emailField = new JTextField();
+    JLabel emailLabel = new JLabel("Email: ");
+    JTextField addressField = new JTextField();
+    JLabel addressLabel = new JLabel("Address: ");
     JButton backToLoginButton = new JButton("Back to Login");
 
     RegisterPage() { //we user String userID, so that the code accepts the userID, and will display the userID with the message
@@ -29,6 +33,20 @@ public class RegisterPage {
         nameLabel.setFont(new Font(null, Font.PLAIN, 15));
         frame.add(nameLabel);
         frame.add(nameField);
+
+        //setting the email field
+        emailField.setBounds(100, 120, 200, 25);
+        emailLabel.setBounds(50, 120, 75, 25);
+        emailLabel.setFont(new Font(null, Font.PLAIN, 15));
+        frame.add(emailField);
+        frame.add(emailLabel);
+
+        //setting the address field
+        addressField.setBounds(110, 150, 200, 25);
+        addressLabel.setBounds(50, 150, 75, 25);
+        addressLabel.setFont(new Font(null, Font.PLAIN, 15));
+        frame.add(addressField);
+        frame.add(addressLabel);
 
 
         //setting the button
