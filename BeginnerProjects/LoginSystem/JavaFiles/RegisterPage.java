@@ -27,7 +27,7 @@ public class RegisterPage {
     JButton backToLoginButton = new JButton("Back to Login");
     IDandPasswords idandPasswords;
 
-    RegisterPage(IDandPasswords idandPasswordsClass) { //we user String userID, so that the code accepts the userID, and will display the userID with the message
+    RegisterPage(IDandPasswords idandPasswordsClass) { //we use String userID, so that the code accepts the userID, and will display the userID with the message
         this.idandPasswords = idandPasswordsClass;
 
         //setting the label or the message of the window
