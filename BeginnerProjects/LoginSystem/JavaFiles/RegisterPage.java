@@ -110,9 +110,10 @@ public class RegisterPage {
                     if (code == 200) { //success
                         warningLabel.setForeground(Color.GREEN);
                         warningLabel.setText("Registration successful!");
-                        // After successful registration, go back to login page
+                        //After successful registration, go back to login page
                         frame.dispose(); //close the current window
                     } else {
+                        //dito ung mali idk how, what, why am crashing tf out
                         warningLabel.setText("Registration failed");
                     }
                 } catch (Exception ex) {
