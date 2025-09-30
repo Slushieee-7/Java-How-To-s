@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.io.*;
+import java.net.*;
 
 public class RegisterPage {
 
@@ -89,11 +91,34 @@ public class RegisterPage {
                 String password = String.valueOf(passwordField.getPassword());
                 System.out.println("Registered: " + name + ", " + email + ", " + address + ", " + password);
 
-                idandPasswords.addUser(name, password);
-
-                frame.dispose(); //close the current window
-                LoginPage loginPage = new LoginPage(idandPasswords.getInfo());
-                // new LoginPage(new java.util.HashMap<String, String>()); //open the login page
+                //sends the data to the database
+                try {
+                    URL url = new URL("http://localhost:3000/register");
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json; utf-8");
+                    conn.setDoOutput(true);
+                    String jsonInputString = String.format( 
+                        "{\"name\":\"%s\", \"email\":\"%s\", \"address\":\"%s\", \"password\":\"%s\"}",
+                        name, email, address, password //string formatting for the json data
+                    );
+                    try (OutputStream os = conn.getOutputStream()) {
+                        byte[] input = jsonInputString.getBytes("utf-8");
+                        os.write(input, 0, input.length);
+                    }
+                    int code = conn.getResponseCode();
+                    if (code == 200) { //success
+                        warningLabel.setForeground(Color.GREEN);
+                        warningLabel.setText("Registration successful!");
+                        // After successful registration, go back to login page
+                        frame.dispose(); //close the current window
+                    } else {
+                        warningLabel.setText("Registration failed");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    warningLabel.setText("Error connecting to server");
+                }
             } else {
                 warningLabel.setText("Please fill in all fields");
             }
