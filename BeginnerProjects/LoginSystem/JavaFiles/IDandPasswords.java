@@ -9,7 +9,6 @@ public class IDandPasswords {
 
     // constructor
     IDandPasswords() {
-
         login.put("Slushieee", "yoshiii"); // here "Slushieee" is the username, while "yoshiii" is the password
         login.put("yoshii", "1234");
         login.put("REYYY", "reyrey");

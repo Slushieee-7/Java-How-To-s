@@ -1,10 +1,12 @@
 //we make different classes that are placed on the same folder for much cleaner code
 
 import java.awt.Font;
+import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class RegisterPage {
@@ -18,6 +20,9 @@ public class RegisterPage {
     JLabel emailLabel = new JLabel("Email: ");
     JTextField addressField = new JTextField();
     JLabel addressLabel = new JLabel("Address: ");
+    JPasswordField passwordField = new JPasswordField();
+    JLabel passwordLabel = new JLabel("Password: ");
+    JLabel warningLabel = new JLabel(" ");
     JButton regisButton = new JButton("Register");
     JButton backToLoginButton = new JButton("Back to Login");
 
@@ -29,43 +34,64 @@ public class RegisterPage {
         welcomeLabel.setText("Welcome new user!" + " ^-^");
 
         //setting the name field
-        nameField.setBounds(100, 90, 200, 25);
+        nameField.setBounds(150, 90, 200, 25);
         nameLabel.setBounds(50, 90, 75, 25);
         nameLabel.setFont(new Font(null, Font.PLAIN, 15));
         frame.add(nameLabel);
         frame.add(nameField);
 
         //setting the email field
-        emailField.setBounds(100, 120, 200, 25);
+        emailField.setBounds(150, 120, 200, 25);
         emailLabel.setBounds(50, 120, 75, 25);
         emailLabel.setFont(new Font(null, Font.PLAIN, 15));
         frame.add(emailField);
         frame.add(emailLabel);
 
         //setting the address field
-        addressField.setBounds(110, 150, 200, 25);
+        addressField.setBounds(150, 150, 200, 25);
         addressLabel.setBounds(50, 150, 75, 25);
         addressLabel.setFont(new Font(null, Font.PLAIN, 15));
         frame.add(addressField);
         frame.add(addressLabel);
 
+        //setting the password field
+        passwordField.setBounds(150, 180, 200, 25);
+        passwordLabel.setBounds(50, 180, 75, 25);
+        passwordLabel.setFont(new Font(null, Font.PLAIN, 15));
+        frame.add(passwordField);
+        frame.add(passwordLabel);
 
-        //setting the button
-        backToLoginButton.setBounds(130, 370, 120, 25);
+        //setting the warning message
+        warningLabel.setBounds(150, 210, 200, 25);
+        warningLabel.setFont(new Font(null, Font.PLAIN, 15));
+        warningLabel.setForeground(Color.RED);
+        frame.add(warningLabel);
+
+        //setting the login button
+        backToLoginButton.setBounds(120, 340, 120, 25);
         backToLoginButton.setFocusable(false);
         backToLoginButton.addActionListener(e -> { 
             frame.dispose(); //close the current window
             new LoginPage(new java.util.HashMap<String, String>()); //open the login page
         });
 
-        //setting the registration
-        regisButton.setBounds(130, 200, 120, 25);
+        //setting the registration button
+        regisButton.setBounds(260, 340, 120, 25);
         regisButton.setFocusable(false);
         regisButton.addActionListener(e -> {
-            String name = nameField.getText();
-            String email = emailField.getText();
-            String address = addressField.getText();
-            System.out.println("Registered: " + nameField.getText() + ", " + emailField.getText() + ", " + addressField.getText());
+            if (!nameField.getText().trim().isEmpty() && !emailField.getText().trim().isEmpty() && 
+                !addressField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty()) {
+                String name = nameField.getText();
+                String email = emailField.getText();
+                String address = addressField.getText();
+                String password = passwordField.getText();
+                System.out.println("Registered: " + name + ", " + email + ", " + address + ", " + password);
+
+                frame.dispose(); //close the current window
+                new LoginPage(new java.util.HashMap<String, String>()); //open the login page
+            } else {
+                warningLabel.setText("Please fill in all fields");
+            }
         });
 
         // setting the frame
@@ -76,5 +102,6 @@ public class RegisterPage {
         frame.setLocationRelativeTo(null);// sets the window at the center of the screen
         frame.add(welcomeLabel);
         frame.add(backToLoginButton);
+        frame.add(regisButton);
     }
 }
