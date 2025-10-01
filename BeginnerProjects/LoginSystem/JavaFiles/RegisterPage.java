@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -198,16 +199,32 @@ public class RegisterPage {
                 String city = (String) cityDropdown.getSelectedItem();
                 String sector = (String) barangayDropdown.getSelectedItem();
                 String password = String.valueOf(passwordField.getPassword());
-                System.out.println("Registered: " + name + ", " + email + ", " + country + ", " + city + ", " + sector + ", " + password);
 
                 // Store registration info in IDandPasswords.Register
                 IDandPasswords.Register reg = new IDandPasswords.Register(name, email, country, city, sector, password);
                 idandPasswords.addRegister(reg);
 
-                // Optionally, also add to login map for authentication
                 idandPasswords.addUser(name, password);
-
-            } else {
+            if (!isValidName(name)){
+                JOptionPane.showMessageDialog(frame, "Name must not contain special characters", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if (!isValidEmail(email)) {
+                JOptionPane.showMessageDialog(frame, "Invalid email format", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } 
+            else if (country.equals("Select Country") || city.equals("Select City") || sector.equals("Select Sector")) {
+                JOptionPane.showMessageDialog(frame, "Please select a country, city, and sector ", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if (!isValidPassword(password)) {
+                JOptionPane.showMessageDialog(frame, "Password must contain 8 characters", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else {
+                // Successful registration
+                JOptionPane.showMessageDialog(frame, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                frame.dispose(); //close the current window
+                LoginPage loginPage = new LoginPage(idandPasswords.getInfo()); //open the login page
+            } 
+        }
+            else {
                 warningLabel.setText("Please fill in all fields");
             }
         });
@@ -221,6 +238,18 @@ public class RegisterPage {
         frame.add(welcomeLabel);
         frame.add(backToLoginButton);
         frame.add(regisButton);
+    }
+
+    //data validation 
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        return email.matches(emailRegex);
+    }
+    private boolean isValidName(String name) {
+        return name.matches("^[a-zA-Z0-9]+$");
+    }
+    private boolean isValidPassword (String password) {
+        return password.length() >= 8; //Password must be at least 8 characters long
     }
 }
 

@@ -6,10 +6,10 @@ import java.io.*;
 
 public class IDandPasswords {
 
-    // make a hashmap because it would be perfect for its "key" and "value"
+    //make a hashmap because it would be perfect for its "key" and "value"
     HashMap<String, String> login = new HashMap<String, String>();
 
-    // List to store registered users
+    //array to store the registered useres
     private ArrayList<Register> registeredUsers = new ArrayList<>();
 
     private static final String USERS_FILE = "users.dat";
@@ -33,15 +33,15 @@ public class IDandPasswords {
         }
     }
 
-    // constructor
+    //constructor
     IDandPasswords() {
         loadRegisteredUsers();
-        // Optionally, add loaded users to login map
         for (Register reg : registeredUsers) {
             login.put(reg.name, reg.password);
         }
     }
 
+    //class to adduser 
     protected void addUser(String name, String password) {
         login.put(name, password);
         System.out.println(name + ", " + password);
@@ -55,7 +55,7 @@ public class IDandPasswords {
     //we use HashMap because it is stored in a HashMap
     //return login - means that whenever the "getInfo" class is called, it will return the keys and values stored in the login HashMap
 
-    // Add a Register object to the list
+    //add a Register object to the list
     public void addRegister(Register reg) {
         registeredUsers.add(reg);
         saveRegisteredUsers();

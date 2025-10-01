@@ -2,6 +2,7 @@
 
 import java.awt.Font;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -10,9 +11,19 @@ public class WelcomePage {
     JFrame frame = new JFrame();
     JLabel welcomeLabel = new JLabel("Hi!");
     JLabel infoLabel = new JLabel();
+    JButton logoutButton = new JButton("Logout");
 
     // Constructor for Register object
     public WelcomePage(IDandPasswords.Register user) {
+
+        logoutButton.setBounds(200, 350, 100, 25);
+        logoutButton.setFocusable(false);
+        logoutButton.addActionListener(e -> {
+            frame.dispose();
+            new LoginPage(new IDandPasswords().getInfo());
+        });
+        frame.add(logoutButton);
+
         welcomeLabel.setBounds(50, 30, 400, 30);
         welcomeLabel.setFont(new Font(null, Font.BOLD, 20));
         welcomeLabel.setText("Good Day! " + user.name + " ^-^");
