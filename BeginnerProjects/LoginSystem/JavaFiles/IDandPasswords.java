@@ -21,10 +21,9 @@ public class IDandPasswords {
         public String address;
         public String password;
 
-        public Register(String name, String email, String address, String password) {
+        public Register(String name, String email, String password) {
             this.name = name;
             this.email = email;
-            this.address = address;
             this.password = password;
         }
     }

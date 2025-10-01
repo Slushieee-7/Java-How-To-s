@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Color;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
@@ -20,7 +21,9 @@ public class RegisterPage {
     JLabel nameLabel = new JLabel("Name: ");
     JTextField emailField = new JTextField();
     JLabel emailLabel = new JLabel("Email: ");
-    JTextField addressField = new JTextField();
+    JComboBox<String> addressDropCountry = new JComboBox<>();
+    JComboBox<String> addressDropCity = new JComboBox<>();
+    JComboBox<String> addressDropBarangay = new JComboBox<>();
     JLabel addressLabel = new JLabel("Address: ");
     JPasswordField passwordField = new JPasswordField();
     JLabel passwordLabel = new JLabel("Password: ");
@@ -52,10 +55,10 @@ public class RegisterPage {
         frame.add(emailLabel);
 
         //setting the address field
-        addressField.setBounds(150, 150, 200, 25);
+        // addressField.setBounds(150, 150, 200, 25);
         addressLabel.setBounds(50, 150, 75, 25);
         addressLabel.setFont(new Font(null, Font.PLAIN, 15));
-        frame.add(addressField);
+        // frame.add(addressField);
         frame.add(addressLabel);
 
         //setting the password field
@@ -83,16 +86,15 @@ public class RegisterPage {
         regisButton.setBounds(260, 340, 120, 25);
         regisButton.setFocusable(false);
         regisButton.addActionListener(e -> {
-            if (!nameField.getText().trim().isEmpty() && !emailField.getText().trim().isEmpty() && 
-                !addressField.getText().trim().isEmpty() && !String.valueOf(passwordField.getPassword()).trim().isEmpty()) {
+            if (!nameField.getText().trim().isEmpty() && !emailField.getText().trim().isEmpty() && !String.valueOf(passwordField.getPassword()).trim().isEmpty()) {
                 String name = nameField.getText();
                 String email = emailField.getText();
-                String address = addressField.getText();
+                // String address = addressField.getText();
                 String password = String.valueOf(passwordField.getPassword());
-                System.out.println("Registered: " + name + ", " + email + ", " + address + ", " + password);
+                System.out.println("Registered: " + name + ", " + email + ", " + ", " + password);
 
                 // Store registration info in IDandPasswords.Register
-                IDandPasswords.Register reg = new IDandPasswords.Register(name, email, address, password);
+                IDandPasswords.Register reg = new IDandPasswords.Register(name, email, password);
                 idandPasswords.addRegister(reg);
 
                 // Optionally, also add to login map for authentication
