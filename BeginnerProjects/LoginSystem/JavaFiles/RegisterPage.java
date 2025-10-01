@@ -8,6 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.io.*;
+import java.net.*;
 
 public class RegisterPage {
 
@@ -89,11 +91,13 @@ public class RegisterPage {
                 String password = String.valueOf(passwordField.getPassword());
                 System.out.println("Registered: " + name + ", " + email + ", " + address + ", " + password);
 
+                // Store registration info in IDandPasswords.Register
+                IDandPasswords.Register reg = new IDandPasswords.Register(name, email, address, password);
+                idandPasswords.addRegister(reg);
+
+                // Optionally, also add to login map for authentication
                 idandPasswords.addUser(name, password);
 
-                frame.dispose(); //close the current window
-                LoginPage loginPage = new LoginPage(idandPasswords.getInfo());
-                // new LoginPage(new java.util.HashMap<String, String>()); //open the login page
             } else {
                 warningLabel.setText("Please fill in all fields");
             }
