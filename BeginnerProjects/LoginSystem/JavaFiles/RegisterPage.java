@@ -1,8 +1,10 @@
 //we make different classes that are placed on the same folder for much cleaner code
 
 import java.awt.Font;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -15,22 +17,25 @@ import java.net.*;
 public class RegisterPage {
 
     // insantiate
+    IDandPasswords idandPasswords;
+    DropdownOptions dropdownOptions = new DropdownOptions();
     JFrame frame = new JFrame();
     JLabel welcomeLabel = new JLabel("Hi!");
     JTextField nameField = new JTextField();
     JLabel nameLabel = new JLabel("Name: ");
     JTextField emailField = new JTextField();
     JLabel emailLabel = new JLabel("Email: ");
-    JComboBox<String> addressDropCountry = new JComboBox<>();
-    JComboBox<String> addressDropCity = new JComboBox<>();
-    JComboBox<String> addressDropBarangay = new JComboBox<>();
-    JLabel addressLabel = new JLabel("Address: ");
+    JComboBox<String> countryDropdown = new JComboBox<>(dropdownOptions.countries);
+    JLabel countryLabel = new JLabel("Country: ");
+    JComboBox<String> cityDropdown = new JComboBox<>(dropdownOptions.empty);
+    JLabel cityLabel = new JLabel("City: ");
+    JComboBox<String> barangayDropdown = new JComboBox<>(dropdownOptions.empty);
+    JLabel barangayLabel = new JLabel("Sector: ");
     JPasswordField passwordField = new JPasswordField();
     JLabel passwordLabel = new JLabel("Password: ");
     JLabel warningLabel = new JLabel(" ");
     JButton regisButton = new JButton("Register");
     JButton backToLoginButton = new JButton("Back to Login");
-    IDandPasswords idandPasswords;
 
     RegisterPage(IDandPasswords idandPasswordsClass) { //we use String userID, so that the code accepts the userID, and will display the userID with the message
         this.idandPasswords = idandPasswordsClass;
@@ -54,16 +59,120 @@ public class RegisterPage {
         frame.add(emailField);
         frame.add(emailLabel);
 
-        //setting the address field
-        // addressField.setBounds(150, 150, 200, 25);
-        addressLabel.setBounds(50, 150, 75, 25);
-        addressLabel.setFont(new Font(null, Font.PLAIN, 15));
-        // frame.add(addressField);
-        frame.add(addressLabel);
+        //setting the dropdowns
+        countryDropdown.setBounds(150, 150, 200, 25);
+        countryLabel.setBounds(50, 150, 75, 25);
+        countryLabel.setFont(new Font(null, Font.PLAIN, 15));
+        frame.add(countryDropdown);
+        frame.add(countryLabel);
 
+        cityDropdown.setBounds(150, 180, 200, 25);
+        cityLabel.setBounds(50, 180, 75, 25);
+        cityLabel.setFont(new Font(null, Font.PLAIN, 15));
+        frame.add(cityDropdown);
+        frame.add(cityLabel);
+
+        barangayDropdown.setBounds(150, 210, 200, 25);
+        barangayLabel.setBounds(50, 210, 75, 25);
+        barangayLabel.setFont(new Font(null, Font.PLAIN, 15));
+        frame.add(barangayDropdown);
+        frame.add(barangayLabel);
+
+        //setting up dropdowns logic
+        countryDropdown.addActionListener(e -> {
+            String selectedCountry = (String) countryDropdown.getSelectedItem();
+            DefaultComboBoxModel<String> cityModel;
+
+            switch (selectedCountry) {
+                case "Philippines":
+                    cityModel = new DefaultComboBoxModel<>(dropdownOptions.citiesPH);
+                    break;
+                case "France":
+                    cityModel = new DefaultComboBoxModel<>(dropdownOptions.citiesFR);
+                    break;
+                case "Japan":
+                    cityModel = new DefaultComboBoxModel<>(dropdownOptions.citiesJP);
+                    break;
+                case "Mexico":
+                    cityModel = new DefaultComboBoxModel<>(dropdownOptions.citiesMX);
+                    break;
+                case "India":
+                    cityModel = new DefaultComboBoxModel<>(dropdownOptions.citiesIN);
+                    break;
+                default:
+                    cityModel = new DefaultComboBoxModel<>(dropdownOptions.empty);
+                    break;
+            }
+            // Set the new model for the city dropdown
+            cityDropdown.setModel(cityModel);
+            // Also reset the sector/barangay dropdown
+            barangayDropdown.setModel(new DefaultComboBoxModel<>(dropdownOptions.empty));
+        });
+
+        cityDropdown.addActionListener(e -> {
+            // Check if a city is actually selected to avoid errors
+            if (cityDropdown.getSelectedItem() == null) {
+                return;
+            }
+
+            String selectedCountry = (String) countryDropdown.getSelectedItem();
+            String selectedCity = (String) cityDropdown.getSelectedItem();
+            DefaultComboBoxModel<String> barangayModel = new DefaultComboBoxModel<>(dropdownOptions.empty);
+
+            switch (selectedCountry) {
+                case "Philippines":
+                    switch (selectedCity) {
+                        case "Quezon": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysPH_QC); break;
+                        case "Manila": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysPH_MN); break;
+                        case "Makati": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysPH_MK); break;
+                        case "Pasig": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysPH_PS); break;
+                        case "Taguig": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysPH_TG); break;
+                    }
+                    break;
+                case "France":
+                    switch (selectedCity) {
+                        case "Paris": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysFR_PA); break;
+                        case "Marseille": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysFR_MA); break;
+                        case "Lyon": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysFR_LY); break;
+                        case "Toulouse": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysFR_TO); break;
+                        case "Nice": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysFR_NI); break;
+                    }
+                    break;
+                case "Japan":
+                     switch (selectedCity) {
+                        case "Tokyo": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysJP_TO); break;
+                        case "Osaka": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysJP_OS); break;
+                        case "Kyoto": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysJP_KY); break;
+                        case "Nagoya": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysJP_NA); break;
+                        case "Fukuoka": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysJP_FU); break;
+                    }
+                    break;
+                case "Mexico":
+                     switch (selectedCity) {
+                        case "Mexico City": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysMX_QC); break;
+                        case "Guadalajara": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysMX_MN); break;
+                        case "Monterrey": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysMX_MK); break;
+                        case "Puebla": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysMX_PS); break;
+                        case "Tijuana": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysMX_TG); break;
+                    }
+                    break;
+                case "India":
+                     switch (selectedCity) {
+                        case "Mumbai": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysIN_MU); break;
+                        case "New Delhi": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysIN_ND); break;
+                        case "Bangalore": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysIN_BA); break;
+                        case "Kolkata": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysIN_KO); break;
+                        case "Chennai": barangayModel = new DefaultComboBoxModel<>(dropdownOptions.barangaysIN_CH); break;
+                    }
+                    break;
+            }
+            // Set the new model for the sector/barangay dropdown
+            barangayDropdown.setModel(barangayModel);
+        });
+        
         //setting the password field
-        passwordField.setBounds(150, 180, 200, 25);
-        passwordLabel.setBounds(50, 180, 75, 25);
+        passwordField.setBounds(150, 240, 200, 25);
+        passwordLabel.setBounds(50, 240, 75, 25);
         passwordLabel.setFont(new Font(null, Font.PLAIN, 15));
         frame.add(passwordField);
         frame.add(passwordLabel);
