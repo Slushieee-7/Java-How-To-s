@@ -1,4 +1,4 @@
-public class DropdownOptions {
+public class dropdownOptions {
     // Options for Countries dropdown
     String[] empty = {" "};
     String[] countries = {"", "Philippines", "France", "Japan", "Mexico", "India"};

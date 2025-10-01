@@ -7,23 +7,48 @@ import javax.swing.JLabel;
 
 public class WelcomePage {
 
-    // insantiate
     JFrame frame = new JFrame();
     JLabel welcomeLabel = new JLabel("Hi!");
+    JLabel infoLabel = new JLabel();
 
-    WelcomePage(String userID) { //we user String userID, so that the code accepts the userID, and will display the userID with the message
+    // Constructor for Register object
+    public WelcomePage(IDandPasswords.Register user) {
+        welcomeLabel.setBounds(50, 30, 400, 30);
+        welcomeLabel.setFont(new Font(null, Font.BOLD, 20));
+        welcomeLabel.setText("Good Day! " + user.name + " ^-^");
 
-        // setting the label or the message of the window
+        StringBuilder info = new StringBuilder("<html>");
+        info.append("Name: ").append(user.name).append("<br>");
+        info.append("Email: ").append(user.email).append("<br>");
+        info.append("Country: ").append(user.country).append("<br>");
+        info.append("City: ").append(user.city).append("<br>");
+        info.append("Sector: ").append(user.sector).append("<br>");
+        info.append("</html>");
+
+        infoLabel.setBounds(50, 80, 400, 200);
+        infoLabel.setFont(new Font(null, Font.PLAIN, 16));
+        infoLabel.setText(info.toString());
+
+        frame.setSize(500, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.add(welcomeLabel);
+        frame.add(infoLabel);
+    }
+
+    // Fallback constructor for just userID
+    WelcomePage(String userID) {
         welcomeLabel.setBounds(50, 50, 200, 25);
         welcomeLabel.setFont(new Font(null, Font.BOLD, 20));
         welcomeLabel.setText("Good Day! " + userID + " ^-^");
 
-        // setting the frame
-        frame.setSize(500, 500); // sets the window
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // sets the default exit window
-        frame.setLayout(null); // sets the layout to null
-        frame.setVisible(true); // sets the window to be visible
-        frame.setLocationRelativeTo(null);// sets the window at the center of the screen
+        frame.setSize(500, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
         frame.add(welcomeLabel);
     }
 }

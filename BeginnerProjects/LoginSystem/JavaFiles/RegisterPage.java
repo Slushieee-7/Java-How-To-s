@@ -1,9 +1,7 @@
 //we make different classes that are placed on the same folder for much cleaner code
 
 import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.awt.Color;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -11,14 +9,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import java.io.*;
-import java.net.*;
 
 public class RegisterPage {
 
     // insantiate
     IDandPasswords idandPasswords;
-    DropdownOptions dropdownOptions = new DropdownOptions();
+    dropdownOptions dropdownOptions = new dropdownOptions();
     JFrame frame = new JFrame();
     JLabel welcomeLabel = new JLabel("Hi!");
     JTextField nameField = new JTextField();
@@ -37,7 +33,7 @@ public class RegisterPage {
     JButton regisButton = new JButton("Register");
     JButton backToLoginButton = new JButton("Back to Login");
 
-    RegisterPage(IDandPasswords idandPasswordsClass) { //we use String userID, so that the code accepts the userID, and will display the userID with the message
+    RegisterPage(IDandPasswords idandPasswordsClass) {
         this.idandPasswords = idandPasswordsClass;
 
         //setting the label or the message of the window
@@ -198,12 +194,14 @@ public class RegisterPage {
             if (!nameField.getText().trim().isEmpty() && !emailField.getText().trim().isEmpty() && !String.valueOf(passwordField.getPassword()).trim().isEmpty()) {
                 String name = nameField.getText();
                 String email = emailField.getText();
-                // String address = addressField.getText();
+                String country = (String) countryDropdown.getSelectedItem();
+                String city = (String) cityDropdown.getSelectedItem();
+                String sector = (String) barangayDropdown.getSelectedItem();
                 String password = String.valueOf(passwordField.getPassword());
-                System.out.println("Registered: " + name + ", " + email + ", " + ", " + password);
+                System.out.println("Registered: " + name + ", " + email + ", " + country + ", " + city + ", " + sector + ", " + password);
 
                 // Store registration info in IDandPasswords.Register
-                IDandPasswords.Register reg = new IDandPasswords.Register(name, email, password);
+                IDandPasswords.Register reg = new IDandPasswords.Register(name, email, country, city, sector, password);
                 idandPasswords.addRegister(reg);
 
                 // Optionally, also add to login map for authentication
@@ -225,3 +223,4 @@ public class RegisterPage {
         frame.add(regisButton);
     }
 }
+

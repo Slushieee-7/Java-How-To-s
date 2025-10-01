@@ -14,25 +14,27 @@ public class IDandPasswords {
 
     private static final String USERS_FILE = "users.dat";
 
-    // Static inner class to hold registration info
+    //holds the registration info
     public static class Register implements Serializable {
         public String name;
         public String email;
-        public String address;
+        public String country;
+        public String city;
+        public String sector;
         public String password;
 
-        public Register(String name, String email, String password) {
+        public Register(String name, String email, String country, String city, String sector, String password) {
             this.name = name;
             this.email = email;
+            this.country = country;
+            this.city = city;
+            this.sector = sector;
             this.password = password;
         }
     }
 
     // constructor
     IDandPasswords() {
-        login.put("Slushieee", "yoshiii"); // here "Slushieee" is the username, while "yoshiii" is the password
-        login.put("yoshii", "1234");
-        login.put("REYYY", "reyrey");
         loadRegisteredUsers();
         // Optionally, add loaded users to login map
         for (Register reg : registeredUsers) {
@@ -59,12 +61,12 @@ public class IDandPasswords {
         saveRegisteredUsers();
     }
 
-    // Optionally, getter for registered users
+    //getter for registered users
     public ArrayList<Register> getRegisteredUsers() {
         return registeredUsers;
     }
 
-    // Save registered users to file
+    //saves registered users to file
     private void saveRegisteredUsers() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(USERS_FILE))) {
             oos.writeObject(registeredUsers);
@@ -73,9 +75,9 @@ public class IDandPasswords {
         }
     }
 
-    // Load registered users from file
+    //loads registered users from file
     private void loadRegisteredUsers() {
-        File file = new File(USERS_FILE);
+        File file = new File(USERS_FILE); //makes a file object for storing database
         if (file.exists()) {
             try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
                 registeredUsers = (ArrayList<Register>) ois.readObject();

@@ -103,7 +103,20 @@ public class LoginPage implements ActionListener{
                         @Override
                         public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
                             frame.dispose(); // Dispose the login frame, then display the welcome page
-                            new WelcomePage(userID); // Open the welcome page, with the message of the window and userID
+                            // Find the Register object for the logged-in user
+                            IDandPasswords.Register user = null;
+                            for (IDandPasswords.Register reg : idandPasswords.getRegisteredUsers()) {
+                                if (reg.name.equals(userID)) {
+                                    user = reg;
+                                    break;
+                                }
+                            }
+                            if (user != null) {
+                                new WelcomePage(user); // Pass the Register object to WelcomePage
+                            } else {
+                                // fallback: just show the userID if Register not found
+                                new WelcomePage(userID);
+                            }
                         }
                     });
                     timer.setRepeats(false); // Only execute once
