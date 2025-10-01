@@ -13,9 +13,10 @@ public class WelcomePage {
     JLabel infoLabel = new JLabel();
     JButton logoutButton = new JButton("Logout");
 
-    // Constructor for Register object
+    //class for welcome page after logging in
     public WelcomePage(IDandPasswords.Register user) {
 
+        //logout button
         logoutButton.setBounds(200, 350, 100, 25);
         logoutButton.setFocusable(false);
         logoutButton.addActionListener(e -> {
@@ -24,6 +25,7 @@ public class WelcomePage {
         });
         frame.add(logoutButton);
 
+        //welcome message and user info
         welcomeLabel.setBounds(50, 30, 400, 30);
         welcomeLabel.setFont(new Font(null, Font.BOLD, 20));
         welcomeLabel.setText("Good Day! " + user.name + " ^-^");
@@ -49,7 +51,7 @@ public class WelcomePage {
         frame.add(infoLabel);
     }
 
-    // Fallback constructor for just userID
+    //welcome page for just greeting the user by their ID
     WelcomePage(String userID) {
         welcomeLabel.setBounds(50, 50, 200, 25);
         welcomeLabel.setFont(new Font(null, Font.BOLD, 20));

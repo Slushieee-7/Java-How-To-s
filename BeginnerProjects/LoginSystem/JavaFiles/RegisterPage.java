@@ -204,19 +204,23 @@ public class RegisterPage {
                 IDandPasswords.Register reg = new IDandPasswords.Register(name, email, country, city, sector, password);
                 idandPasswords.addRegister(reg);
 
-                idandPasswords.addUser(name, password);
+                idandPasswords.addUser(name, password); //add the new user to the login info
             if (!isValidName(name)){
                 JOptionPane.showMessageDialog(frame, "Name must not contain special characters", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            }
+            } //if the name contains special characters, it will pop up a window containing an error message
+
             else if (!isValidEmail(email)) {
                 JOptionPane.showMessageDialog(frame, "Invalid email format", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            } 
-            else if (country.equals("Select Country") || city.equals("Select City") || sector.equals("Select Sector")) {
+            } //if the email is not valid, it will pop up a window containing an error message
+
+            else if (country.equals("Select Country") && city.equals("Select City") && sector.equals("Select Sector")) {
                 JOptionPane.showMessageDialog(frame, "Please select a country, city, and sector ", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            }
+            }//if the user did not choose, it will pop up a window containing an error message
+
             else if (!isValidPassword(password)) {
                 JOptionPane.showMessageDialog(frame, "Password must contain 8 characters", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            }
+            }//if the password is < 8 characters, it will pop up a window containing an error message
+
             else {
                 // Successful registration
                 JOptionPane.showMessageDialog(frame, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -225,8 +229,8 @@ public class RegisterPage {
             } 
         }
             else {
-                warningLabel.setText("Please fill in all fields");
-            }
+                JOptionPane.showMessageDialog(frame, "Please fill in all required fields", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } //if there are empty fields, it will pop up a window containing an error message
         });
 
         // setting the frame
