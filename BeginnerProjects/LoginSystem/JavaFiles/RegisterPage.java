@@ -35,6 +35,9 @@ public class RegisterPage {
     JButton backToLoginButton = new JButton("Back to Login");
 
     RegisterPage(IDandPasswords idandPasswordsClass) {
+        /** Creates the Registration Page
+         * @param idandPasswordsClass an instance of IDandPasswords class to store user info
+         */
         this.idandPasswords = idandPasswordsClass;
 
         //setting the label or the message of the window
@@ -192,7 +195,10 @@ public class RegisterPage {
         regisButton.setBounds(260, 340, 120, 25);
         regisButton.setFocusable(false);
         regisButton.addActionListener(e -> {
-            if (!nameField.getText().trim().isEmpty() && !emailField.getText().trim().isEmpty() && !String.valueOf(passwordField.getPassword()).trim().isEmpty()) {
+            try {
+                if (nameField.getText().trim().isEmpty() || emailField.getText().trim().isEmpty() || String.valueOf(passwordField.getPassword()).trim().isEmpty()) {
+                    throw new EmptyFieldException("Please fill in all required fields");
+                }
                 String name = nameField.getText();
                 String email = emailField.getText();
                 String country = (String) countryDropdown.getSelectedItem();
@@ -200,37 +206,33 @@ public class RegisterPage {
                 String sector = (String) barangayDropdown.getSelectedItem();
                 String password = String.valueOf(passwordField.getPassword());
 
+                validateName(name);
+                validateEmail(email);
+                validatePassword(password);
+
+                if (country.equals("Select Country") && city.equals("Select City") && sector.equals("Select Sector")) {
+                    throw new InvalidSelectionException("Please select a country, city, and sector");
+                }
+
                 // Store registration info in IDandPasswords.Register
                 IDandPasswords.Register reg = new IDandPasswords.Register(name, email, country, city, sector, password);
                 idandPasswords.addRegister(reg);
-
                 idandPasswords.addUser(name, password); //add the new user to the login info
-            if (!isValidName(name)){
-                JOptionPane.showMessageDialog(frame, "Name must not contain special characters", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            } //if the name contains special characters, it will pop up a window containing an error message
 
-            else if (!isValidEmail(email)) {
-                JOptionPane.showMessageDialog(frame, "Invalid email format", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            } //if the email is not valid, it will pop up a window containing an error message
-
-            else if (country.equals("Select Country") && city.equals("Select City") && sector.equals("Select Sector")) {
-                JOptionPane.showMessageDialog(frame, "Please select a country, city, and sector ", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            }//if the user did not choose, it will pop up a window containing an error message
-
-            else if (!isValidPassword(password)) {
-                JOptionPane.showMessageDialog(frame, "Password must contain 8 characters", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            }//if the password is < 8 characters, it will pop up a window containing an error message
-
-            else {
-                // Successful registration
                 JOptionPane.showMessageDialog(frame, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose(); //close the current window
                 LoginPage loginPage = new LoginPage(idandPasswords.getInfo()); //open the login page
-            } 
-        }
-            else {
-                JOptionPane.showMessageDialog(frame, "Please fill in all required fields", "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
-            } //if there are empty fields, it will pop up a window containing an error message
+            } catch (InvalidNameException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } catch (InvalidEmailException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } catch (InvalidPasswordException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } catch (InvalidSelectionException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } catch (EmptyFieldException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            }
         });
 
         // setting the frame
@@ -244,16 +246,47 @@ public class RegisterPage {
         frame.add(regisButton);
     }
 
-    //data validation 
-    private boolean isValidEmail(String email) {
+    // Exception-based data validation
+    private void validateEmail(String email) throws InvalidEmailException {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        return email.matches(emailRegex);
+        if (!email.matches(emailRegex)) {
+            throw new InvalidEmailException("Invalid email format");
+        }
     }
-    private boolean isValidName(String name) {
-        return name.matches("^[a-zA-Z0-9]+$");
+
+    private void validateName(String name) throws InvalidNameException {
+        if (!name.matches("^[a-zA-Z ]+$")) {
+            throw new InvalidNameException("Name must only contain letters and spaces");
+        }
     }
-    private boolean isValidPassword (String password) {
-        return password.length() >= 8; //Password must be at least 8 characters long
+
+    private void validatePassword(String password) throws InvalidPasswordException {
+        if (password.length() < 8) {
+            throw new InvalidPasswordException("Password must be at least 8 characters long");
+        }
+        if (!password.matches(".*[A-Za-z].*")) {
+            throw new InvalidPasswordException("Password must contain at least one letter");
+        }
+        if (!password.matches(".*\\d.*")) {
+            throw new InvalidPasswordException("Password must contain at least one number");
+        }
+    }
+
+    // Custom exception classes
+    static class InvalidNameException extends Exception {
+        public InvalidNameException(String message) { super(message); }
+    }
+    static class InvalidEmailException extends Exception {
+        public InvalidEmailException(String message) { super(message); }
+    }
+    static class InvalidPasswordException extends Exception {
+        public InvalidPasswordException(String message) { super(message); }
+    }
+    static class InvalidSelectionException extends Exception {
+        public InvalidSelectionException(String message) { super(message); }
+    }
+    static class EmptyFieldException extends Exception {
+        public EmptyFieldException(String message) { super(message); }
     }
 }
 
