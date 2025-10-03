@@ -97,14 +97,14 @@ public class LoginPage implements ActionListener{
             if(loginInfo.containsKey(userID)){ //if there is a string entered at the ID Field:
                 if(loginInfo.get(userID).equals(userPass)){ //if the entered user ID is equals to the password:
                     confirmMessage.setText("Login Successful ^o^");; //it will display "Login Successful!"
-                    confirmMessage.setForeground(Color.BLACK); //its foreground will be blue
+                    confirmMessage.setForeground(Color.BLACK); //its text will be BLACK
 
                     Timer timer = new Timer(2000, new ActionListener() { //sets a 2 seconds time interval
                         @Override
                         public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
                             frame.dispose(); // Dispose the login frame, then display the welcome page
                             // Find the Register object for the logged-in user
-                            IDandPasswords.Register user = null;
+                            IDandPasswords.Register user = null; 
                             for (IDandPasswords.Register reg : idandPasswords.getRegisteredUsers()) {
                                 if (reg.name.equals(userID)) {
                                     user = reg;

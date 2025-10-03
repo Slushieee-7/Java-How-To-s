@@ -272,7 +272,7 @@ public class RegisterPage {
         }
     }
 
-    // Custom exception classes
+    //custom exception classes
     static class InvalidNameException extends Exception {
         public InvalidNameException(String message) { super(message); }
     }
