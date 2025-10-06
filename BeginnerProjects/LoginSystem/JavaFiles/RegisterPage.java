@@ -33,12 +33,33 @@ public class RegisterPage {
     JLabel warningLabel = new JLabel(" ");
     JButton regisButton = new JButton("Register");
     JButton backToLoginButton = new JButton("Back to Login");
+    JButton showPass = new JButton("(─ ‿ ─)");
 
     RegisterPage(IDandPasswords idandPasswordsClass) {
         /** Creates the Registration Page
          * @param idandPasswordsClass an instance of IDandPasswords class to store user info
          */
         this.idandPasswords = idandPasswordsClass;
+
+        //Show Password button
+        showPass.setBounds(360, 240, 80, 25);
+        showPass.setFocusable(false);
+        showPass.addActionListener(e -> {
+            if (String.valueOf(passwordField.getPassword()).isEmpty()) { //even if pass field is empty
+                passwordField.setEchoChar('\u0000'); //when typed, it would show password (\u0000 means no masking meaning show password)
+                showPass.setText("(⊙_⊙)"); //show password emoji
+            } else {
+                if (passwordField.getEchoChar() != '\u0000') { //If password is not masked (!\u0000)
+                    passwordField.setEchoChar('\u0000'); //Show password
+                    showPass.setText("(⊙_⊙)");
+                } else { //if password is shown (\u0000)
+                    passwordField.setEchoChar('•'); //Hide password
+                    showPass.setText("(─ ‿ ─)"); //hide password emoji
+                }
+            }
+        });
+        frame.add(showPass);
+        
 
         //setting the label or the message of the window
         welcomeLabel.setBounds(130, 50, 300, 25);
