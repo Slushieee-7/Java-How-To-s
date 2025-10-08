@@ -235,14 +235,16 @@ public class RegisterPage {
                     throw new InvalidSelectionException("Please select a country, city, and sector");
                 }
 
-                // Store registration info in IDandPasswords.Register
-                IDandPasswords.Register reg = new IDandPasswords.Register(name, email, country, city, sector, password);
-                idandPasswords.addRegister(reg);
-                idandPasswords.addUser(name, password); //add the new user to the login info
+                // Only insert user into SQLite database
+                boolean dbSuccess = database.insertUser(name, email, password, country, city, sector);
+                if (!dbSuccess) {
+                    JOptionPane.showMessageDialog(frame, "Failed to save user to database.", "Database Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 JOptionPane.showMessageDialog(frame, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 frame.dispose(); //close the current window
-                LoginPage loginPage = new LoginPage(idandPasswords.getInfo()); //open the login page
+                new LoginPage(null); //open the login page (no local user info)
             } catch (InvalidNameException ex) {
                 JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
             } catch (InvalidEmailException ex) {

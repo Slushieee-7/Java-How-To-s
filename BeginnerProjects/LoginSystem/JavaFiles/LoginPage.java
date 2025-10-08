@@ -1,6 +1,6 @@
 //we make different classes that are placed on the same folder for much cleaner code
 
-import java.util.HashMap;
+//
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,8 +15,6 @@ import javax.swing.Timer;
 
 public class LoginPage implements ActionListener{
 
-    HashMap<String, String> loginInfo = new HashMap<String, String>(); 
-
     JFrame frame = new JFrame(); //instantiate the frame
     JButton loginButton = new JButton("Login"); //make a login button
     JButton clearButton = new JButton("Clear"); //make a clear or reset button
@@ -27,12 +25,8 @@ public class LoginPage implements ActionListener{
     JLabel userPassLabel = new JLabel("Password: "); //label the textField as Password
     JLabel confirmMessage = new JLabel(); //make a message for successful login
     JLabel errorMessage = new JLabel(); //make a message for failed login
-    IDandPasswords idandPasswords = new IDandPasswords();
 
-    LoginPage(HashMap<String, String> loginInfoOriginal) { // we will now make this class the copy for the information
-                                                           // stored in the IDandPasswords
-        loginInfo = loginInfoOriginal; // this will be the copy of our HashMap, wherein "loginInfo" is available
-                                       // globally
+    LoginPage(Object ignored) { // Constructor kept for compatibility
 
         //setting the labels
         userIDLabel.setBounds(50, 100, 75, 25);
@@ -94,52 +88,32 @@ public class LoginPage implements ActionListener{
             String userID = IDField.getText(); //gets the text from the IDField
             String userPass = String.valueOf(PassField.getPassword()); //gets the text from the PassField and also verifies the password
 
-            if(loginInfo.containsKey(userID)){ //if there is a string entered at the ID Field:
-                if(loginInfo.get(userID).equals(userPass)){ //if the entered user ID is equals to the password:
-                    confirmMessage.setText("Login Successful ^o^");; //it will display "Login Successful!"
-                    confirmMessage.setForeground(Color.BLACK); //its text will be BLACK
-
-                    Timer timer = new Timer(2000, new ActionListener() { //sets a 2 seconds time interval
-                        @Override
-                        public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
-                            frame.dispose(); // Dispose the login frame, then display the welcome page
-                            // Find the Register object for the logged-in user
-                            IDandPasswords.Register user = null; 
-                            for (IDandPasswords.Register reg : idandPasswords.getRegisteredUsers()) {
-                                if (reg.name.equals(userID)) {
-                                    user = reg;
-                                    break;
-                                }
-                            }
-                            if (user != null) {
-                                new WelcomePage(user); // Pass the Register object to WelcomePage
-                            } else {
-                                // fallback: just show the userID if Register not found
-                                new WelcomePage(userID);
-                            }
-                        }
-                    });
-                    timer.setRepeats(false); // Only execute once
-                    timer.start(); // Start the timer
-                }
-                else{
-                    errorMessage.setText("Incorrect password (づ •. •)? "); //if the entered user ID is not equals to the password
-                }
-            }
-            else {
-                errorMessage.setText("Username not found (ㅠ︿ㅠ) "); //if there is no string entered at
+            if(database.checkUserCredentials(userID, userPass)){
+                confirmMessage.setText("Login Successful ^o^");
+                confirmMessage.setForeground(Color.BLACK);
+                Timer timer = new Timer(2000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        frame.dispose();
+                        new WelcomePage(userID); // Only pass userID, as we no longer have Register object
+                    }
+                });
+                timer.setRepeats(false);
+                timer.start();
+            } else {
+                errorMessage.setText("Incorrect username or password (ㅠ︿ㅠ) ");
             }
         }
         if(e.getSource() == registerButton){ //when the register button is pressed:
-            Timer timer = new Timer(200, new ActionListener() { //sets a 2 seconds time interval
-                        @Override
-                        public void actionPerformed(ActionEvent evt) { //when the login button is pressed, and the login is successful
-                            frame.dispose(); // Dispose the login frame, then display the welcome page
-                            RegisterPage registerPage = new RegisterPage(idandPasswords); // Open the register page
-                        }
-                    });
-            timer.setRepeats(false); // Only execute once
-            timer.start(); // Start the timer
+            Timer timer = new Timer(200, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    frame.dispose();
+                    new RegisterPage(null); // Open the register page (no local user info)
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
         }
     } 
 }
