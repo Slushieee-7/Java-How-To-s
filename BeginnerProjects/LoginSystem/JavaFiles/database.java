@@ -1,4 +1,3 @@
-
 import java.sql.*;
 
 public class database {
@@ -80,5 +79,36 @@ public class database {
          System.err.println("Error inserting user: " + e.getMessage());
          return false;
       }
+   }
+
+   // retrieve a registered user by name from the USERS table
+   public static IDandPasswords.Register getUserByName(String name) {
+      Connection c = null;
+      PreparedStatement pstmt = null;
+      ResultSet rs = null;
+      try {
+         Class.forName("org.sqlite.JDBC");
+         c = DriverManager.getConnection("jdbc:sqlite:test.db");
+         String sql = "SELECT NAME, EMAIL, PASSWORD, COUNTRY, CITY, SECTOR FROM USERS WHERE NAME = ?";
+         pstmt = c.prepareStatement(sql);
+         pstmt.setString(1, name);
+         rs = pstmt.executeQuery();
+         if (rs.next()) {
+            String nm = rs.getString("NAME");
+            String email = rs.getString("EMAIL");
+            String password = rs.getString("PASSWORD");
+            String country = rs.getString("COUNTRY");
+            String city = rs.getString("CITY");
+            String sector = rs.getString("SECTOR");
+            return new IDandPasswords.Register(nm, email, country, city, sector, password);
+         }
+      } catch (Exception e) {
+         System.err.println("Error fetching user: " + e.getMessage());
+      } finally {
+         try { if (rs != null) rs.close(); } catch (Exception ignored) {}
+         try { if (pstmt != null) pstmt.close(); } catch (Exception ignored) {}
+         try { if (c != null) c.close(); } catch (Exception ignored) {}
+      }
+      return null;
    }
 }

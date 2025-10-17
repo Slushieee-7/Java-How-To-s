@@ -86,8 +86,7 @@ public class LoginPage implements ActionListener{
 
         if(e.getSource() == loginButton){
             String userID = IDField.getText(); //gets the text from the IDField
-            String userPass = String.valueOf(PassField.getPassword()); //gets the text from the PassField and also verifies the password
-
+            String userPass = String.valueOf(PassField.getPassword()); //gets the text from the PassField and also verifies the password  
             if(database.checkUserCredentials(userID, userPass)){
                 confirmMessage.setText("Login Successful ^o^");
                 confirmMessage.setForeground(Color.BLACK);
@@ -95,7 +94,19 @@ public class LoginPage implements ActionListener{
                     @Override
                     public void actionPerformed(ActionEvent evt) {
                         frame.dispose();
-                        new WelcomePage(userID); // Only pass userID, as we no longer have Register object
+                        // find the Register object for the logged-in user
+                        IDandPasswords store = new IDandPasswords();
+                        IDandPasswords.Register found = null;
+                        for (IDandPasswords.Register r : store.getRegisteredUsers()) {
+                            if (r.name.equals(userID)) { found = r; break; }
+                        }
+                        if (found != null) {
+                            // access email as found.email
+                            new WelcomePage(found);
+                        } else {
+                            // fallback: no Register found — still open welcome with name only
+                            new WelcomePage(new IDandPasswords.Register(userID, "", "", "", "", ""));
+                        }
                     }
                 });
                 timer.setRepeats(false);

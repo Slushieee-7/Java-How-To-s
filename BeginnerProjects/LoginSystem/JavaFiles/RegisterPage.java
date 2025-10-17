@@ -13,9 +13,11 @@ import javax.swing.JTextField;
 
 public class RegisterPage {
 
-    // insantiate
+    // instantiate
     IDandPasswords idandPasswords;
     dropdownOptions dropdownOptions = new dropdownOptions();
+    DatabaseHandler dbHandler = new DatabaseHandler();
+
     JFrame frame = new JFrame();
     JLabel welcomeLabel = new JLabel("Hi!");
     JTextField nameField = new JTextField();
@@ -36,9 +38,6 @@ public class RegisterPage {
     JButton showPass = new JButton("(─ ‿ ─)");
 
     RegisterPage(IDandPasswords idandPasswordsClass) {
-        /** Creates the Registration Page
-         * @param idandPasswordsClass an instance of IDandPasswords class to store user info
-         */
         this.idandPasswords = idandPasswordsClass;
 
         //Show Password button
@@ -209,7 +208,7 @@ public class RegisterPage {
         backToLoginButton.setFocusable(false);
         backToLoginButton.addActionListener(e -> { 
             frame.dispose(); //close the current window
-            LoginPage loginPage = new LoginPage(idandPasswords.getInfo()); //open the login page
+            new LoginPage(new IDandPasswords().getInfo());//open the login page
         });
 
         //setting the registration button
@@ -230,7 +229,10 @@ public class RegisterPage {
                 validateName(name);
                 validateEmail(email);
                 validatePassword(password);
-
+                
+                if (dbHandler.checkUserExists(name, email)) {
+                    throw new UserExistsException("Username or email already exists");
+                }
                 if (country.equals("Select Country") && city.equals("Select City") && sector.equals("Select Sector")) {
                     throw new InvalidSelectionException("Please select a country, city, and sector");
                 }
@@ -254,6 +256,8 @@ public class RegisterPage {
             } catch (InvalidSelectionException ex) {
                 JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
             } catch (EmptyFieldException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
+            } catch (UserExistsException ex) {
                 JOptionPane.showMessageDialog(frame, ex.getMessage(), "Registration Failed", JOptionPane.INFORMATION_MESSAGE);
             }
         });
@@ -311,5 +315,7 @@ public class RegisterPage {
     static class EmptyFieldException extends Exception {
         public EmptyFieldException(String message) { super(message); }
     }
+    static class UserExistsException extends Exception {
+        public UserExistsException(String message) { super(message); }
+    }
 }
-
